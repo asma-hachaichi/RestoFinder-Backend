@@ -55,6 +55,24 @@ exports.readMenuById = async function (req, res) {
   }
 };
 
+//Find menu by id
+exports.readMenuByResto = async function (req, res) {
+  try {
+    const docs = await menu.findAndCountAll({
+      where: { restoId: req.params.id },
+    });
+
+    if (docs.count === 0) {
+      return res.status(204).end();
+    }
+
+    res.status(200).json({ data: docs.rows });
+  } catch (e) {
+    console.error(e);
+    res.status(400).end();
+  }
+};
+
 //Update menu
 exports.updateMenu = async function (req, res) {
   const foundMenu = await menu.findOne({
